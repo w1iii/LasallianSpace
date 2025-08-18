@@ -14,8 +14,29 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
 
 
+let posts = [
+  {
+    id: 1,
+    avatar: "XX",
+    author: "Author 1",
+    post_time: "hours",
+    content: "Starting a new school year is always a mix of excitement...",
+  },
+  {
+    id: 2,
+    avatar: "XX",
+    author: "Author 1",
+    post_time: "hours",
+    content: "Starting a new school year is always a mix of excitement...",
+  },
+
+
+];
+
+
 app.get("/", (req, res) => {
-    res.render("index");
+
+    res.render("index", { posts });
 });
 
 app.listen(port, (req, res) => {

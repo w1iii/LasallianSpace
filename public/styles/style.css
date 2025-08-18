@@ -17,6 +17,7 @@
         }
 
         .navbar-title{
+            margin-left: 3rem;
             font-size: 42px;
             color: #fff;
             font-weight: 500;
@@ -108,6 +109,18 @@
             margin-top: 2px;
         }
 
+        .container_post_else {
+            display: flex;
+            padding: 5rem;
+            justify-content: center;
+            background-color: #ffffff7d;
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
         /* Content Section */
         .content-section {
             padding: 1.25rem;

@@ -8,24 +8,26 @@
 </head>
 <body>
     <nav class="navbar">
-        <div></div> <!-- Empty div for spacing -->
         <h1 class="navbar-title">LasallianSpace</h1>
         <button class="navbar-btn-add">+</button>
     </nav>
 
+
+    <!-- section -->
     <main class="main-content">
         <!-- Sample Post Cards -->
+         <% posts.forEach(post => { %>
         <div class="post-card">
             <div class="author-section">
-                <div class="author-avatar">JD</div>
+                <div class="author-avatar"><% posts.avatar %></div>
                 <div class="author-info">
-                    <h3 class="author-name">John Doe</h3>
-                    <span class="post-time">2 hours ago</span>
+                    <h3 class="author-name"><% posts.author %></h3>
+                    <span class="post-time"><% posts.post_time %></span>
                 </div>
             </div>
             
             <div class="content-section">
-                <p>This is a sample post content. The height of this section changes depending on how long the content is. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p><% posts.content %></p>
             </div>
             
             <div class="actions-section">
@@ -37,8 +39,13 @@
                 </button>
             </div>
         </div>
+        <% }) %>
+            <!-- <div class="container_post_else">
 
-        <div class="post-card">
+                <h1 class="no_post"> No posts yet.</h1>
+            </div>
+    <! section -->
+        <!-- <div class="post-card">
             <div class="author-section">
                 <div class="author-avatar">MS</div>
                 <div class="author-info">
@@ -81,7 +88,7 @@
                 <button class="action-btn comment-btn">
                     <span>💬</span> Comment
                 </button>
-            </div>
+            </div> -->
         </div>
     </main>
 </body>
