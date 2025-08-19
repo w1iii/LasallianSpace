@@ -8,19 +8,24 @@
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
             background-color: #A9BA9D;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
 
         body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.405); /* Dark overlay */
-    z-index: -1;
-}
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.405); /* Dark overlay */
+            background-size: cover;
+            z-index: -1;
+        }
 
         nav{
             display: flex;
@@ -38,6 +43,10 @@
             font-weight: 500;
             flex-grow: 1;
             text-align: center;
+        }
+
+        a{
+         text-decoration: none;
         }
 
         .navbar-btn-add{
@@ -235,3 +244,63 @@
                 padding: 0.4rem 0.8rem;
             }
         }
+
+        
+.post-form {
+  max-width: 800px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 5rem;
+  gap: 1rem;
+}
+
+.post-form input{
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 3rem;
+  opacity: 80%;
+
+}
+.post-form textarea {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 15rem;
+  opacity: 80%;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.form-buttons button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #3182ce;
+  color: white;
+}
+
+.form-buttons button[type="button"] {
+  background-color: #e2e8f0;
+  color: #2d3748;
+}
+
+
+label{
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+}

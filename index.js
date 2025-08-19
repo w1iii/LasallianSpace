@@ -38,6 +38,10 @@ app.get("/", (req, res) => {
     res.render("index", { posts });
 });
 
+app.get("/addpost", (req,res) =>{
+    res.render("addpost");
+})
+
 app.listen(port, (req, res) => {
     console.log(port);
 });
