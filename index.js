@@ -24,10 +24,10 @@ let posts = [
   },
   {
     id: 2,
-    avatar: "XX",
-    author: "Author 1",
+    avatar: "XY",
+    author: "Author 2",
     post_time: "hours",
-    content: "Starting a new school year is always a mix of excitement...",
+    content: "Test Lorem Ipsum dolorem" 
   },
 
 
@@ -35,7 +35,6 @@ let posts = [
 
 
 app.get("/", (req, res) => {
-
     res.render("index", { posts });
 });
 
