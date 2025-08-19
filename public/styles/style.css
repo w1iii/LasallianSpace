@@ -4,8 +4,23 @@
         }
 
         body{
+            background-image: url("/usls.jpeg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
             background-color: #A9BA9D;
         }
+
+        body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.405); /* Dark overlay */
+    z-index: -1;
+}
 
         nav{
             display: flex;
@@ -55,7 +70,7 @@
 
         /* Post Card Styles */
         .post-card {
-            background-color: #fff;
+            background-color: #ffffffcc;
             border-radius: 12px;
             margin-bottom: 1.5rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -73,7 +88,7 @@
             display: flex;
             align-items: center;
             padding: 1rem;
-            background-color: #f8f9fa;
+            background-color: #f8f9fa27;
             border-bottom: 1px solid #e9ecef;
         }
 
@@ -138,7 +153,7 @@
         /* Actions Section */
         .actions-section {
             padding: 0.75rem 1rem;
-            background-color: #f8f9fa;
+            background-color: #f8f9fa1c;
             border-top: 1px solid #e9ecef;
             display: flex;
             gap: 0.5rem;
