@@ -42,6 +42,19 @@ app.get("/addpost", (req,res) =>{
     res.render("addpost");
 })
 
+app.post('/submit', (req,res) => {
+  let content = req.body.content;
+  posts.push(
+    {
+      id: 3,
+      avatar: "XZ",
+      author: "Author 3",
+      post_time: "hours",
+      content: content
+    })
+  res.redirect('/');
+});
+
 app.listen(port, (req, res) => {
     console.log(port);
 });
