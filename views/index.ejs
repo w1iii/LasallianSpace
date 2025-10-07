@@ -12,12 +12,9 @@
         <a href="/addpost" class="navbar-btn-add"> + </a>
     </nav>
 
-
-    <!-- section -->
     <main class="main-content">
-        <!-- Sample Post Cards -->
-         <% posts.forEach(post => { %>
-        <div class="post-card">
+        <% posts.forEach(post => { %>
+        <div class="post-card" data-post-id="<%= post.id %>">
             <div class="author-section">
                 <div class="author-avatar"><%= post.avatar %></div>
                 <div class="author-info">
@@ -31,65 +28,156 @@
             </div>
             
             <div class="actions-section">
-                <button class="action-btn like-btn">
-                    <span>👍</span> Like
+                <button class="action-btn like-btn <%= post.user_has_liked ? 'liked' : '' %>" data-post-id="<%= post.id %>">
+                    <span class="heart-icon"><%= post.user_has_liked ? '♥' : '♡' %></span>
+                    <span class="like-count"><%= post.like_count || 0 %></span>
                 </button>
-                <button class="action-btn comment-btn">
-                    <span>💬</span> Comment
+                <button class="action-btn comment-btn" data-post-id="<%= post.id %>">
+                    <span>💬</span>
+                    <span class="comment-count"><%= post.comment_count || 0 %></span>
                 </button>
+            </div>
+
+            <!-- Comments Section (Hidden by default) -->
+            <div class="comments-section" id="comments-<%= post.id %>" style="display: none;">
+                <div class="comments-list-container">
+                    <div class="comments-list" id="commentsList-<%= post.id %>">
+                        <!-- Comments will be loaded here -->
+                    </div>
+                </div>
+                <div class="comment-form-inline">
+                    <textarea class="comment-input" placeholder="Write a comment..." rows="2"></textarea>
+                    <button class="submit-comment-btn" data-post-id="<%= post.id %>">Post</button>
+                </div>
             </div>
         </div>
         <% }) %>
-            <!-- <div class="container_post_else">
 
-                <h1 class="no_post"> No posts yet.</h1>
-            </div>
-    <! section -->
-        <!-- <div class="post-card">
-            <div class="author-section">
-                <div class="author-avatar">MS</div>
-                <div class="author-info">
-                    <h3 class="author-name">Maria Santos</h3>
-                    <span class="post-time">5 hours ago</span>
-                </div>
-            </div>
-            
-            <div class="content-section">
-                <p>Shorter post content here! 🎉</p>
-            </div>
-            
-            <div class="actions-section">
-                <button class="action-btn like-btn">
-                    <span>👍</span> Like
-                </button>
-                <button class="action-btn comment-btn">
-                    <span>💬</span> Comment
-                </button>
-            </div>
+        <% if (posts.length === 0) { %>
+        <div class="container_post_else">
+            <h1 class="no_post">No posts yet.</h1>
         </div>
-
-        <div class="post-card">
-            <div class="author-section">
-                <div class="author-avatar">AL</div>
-                <div class="author-info">
-                    <h3 class="author-name">Alex Lopez</h3>
-                    <span class="post-time">1 day ago</span>
-                </div>
-            </div>
-            
-            <div class="content-section">
-                <p>This is a much longer post to demonstrate how the content section expands based on the amount of text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-            </div>
-            
-            <div class="actions-section">
-                <button class="action-btn like-btn">
-                    <span>👍</span> Like
-                </button>
-                <button class="action-btn comment-btn">
-                    <span>💬</span> Comment
-                </button>
-            </div> -->
-        </div>
+        <% } %>
     </main>
+
+    <script>
+        // Like functionality
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                const postId = this.dataset.postId;
+                const heartIcon = this.querySelector('.heart-icon');
+                const likeCount = this.querySelector('.like-count');
+
+                try {
+                    const response = await fetch(`/api/posts/${postId}/like`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.liked) {
+                        heartIcon.textContent = '♥';
+                        heartIcon.style.color = '#e74c3c';
+                        this.classList.add('liked');
+                    } else {
+                        heartIcon.textContent = '♡';
+                        heartIcon.style.color = '';
+                        this.classList.remove('liked');
+                    }
+                    
+                    likeCount.textContent = data.likeCount;
+                } catch (err) {
+                    console.error('Error toggling like:', err);
+                }
+            });
+        });
+
+        // Comments toggle and functionality
+        document.querySelectorAll('.comment-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                const postId = this.dataset.postId;
+                const commentsSection = document.getElementById(`comments-${postId}`);
+                
+                if (commentsSection.style.display === 'none') {
+                    commentsSection.style.display = 'block';
+                    await loadComments(postId);
+                } else {
+                    commentsSection.style.display = 'none';
+                }
+            });
+        });
+
+        async function loadComments(postId) {
+            try {
+                const response = await fetch(`/api/posts/${postId}/comments`);
+                const comments = await response.json();
+                
+                const commentsList = document.getElementById(`commentsList-${postId}`);
+                commentsList.innerHTML = '';
+
+                if (comments.length === 0) {
+                    commentsList.innerHTML = '<p class="no-comments">No comments yet. Be the first to comment!</p>';
+                } else {
+                    comments.forEach(comment => {
+                        const commentEl = document.createElement('div');
+                        commentEl.className = 'comment-item';
+                        commentEl.innerHTML = `
+                            <div class="comment-author-section">
+                                <div class="comment-avatar">${comment.avatar}</div>
+                                <div class="comment-author-info">
+                                    <h4 class="comment-author-name">${comment.author}</h4>
+                                    <span class="comment-time">${new Date(comment.created_at).toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div class="comment-content">
+                                <p>${comment.content}</p>
+                            </div>
+                        `;
+                        commentsList.appendChild(commentEl);
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading comments:', err);
+            }
+        }
+
+        document.querySelectorAll('.submit-comment-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const postId = this.dataset.postId;
+                const commentsSection = document.getElementById(`comments-${postId}`);
+                const textarea = commentsSection.querySelector('.comment-input');
+                const content = textarea.value.trim();
+
+                if (!content) {
+                    alert('Please write a comment');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/posts/${postId}/comments`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ content })
+                    });
+
+                    if (response.ok) {
+                        textarea.value = '';
+                        await loadComments(postId);
+                        
+                        // Update comment count
+                        const commentBtn = document.querySelector(`[data-post-id="${postId}"].comment-btn`);
+                        const countSpan = commentBtn.querySelector('.comment-count');
+                        const currentCount = parseInt(countSpan.textContent);
+                        countSpan.textContent = currentCount + 1;
+                    }
+                } catch (err) {
+                    console.error('Error posting comment:', err);
+                }
+            });
+        });
+    </script>
 </body>
-</html>>
+</html>
